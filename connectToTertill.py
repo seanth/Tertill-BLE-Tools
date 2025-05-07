@@ -148,7 +148,10 @@ async def readTertillData(address=None):
         theSolarVoltage = int.from_bytes(solarVoltageData, byteorder='little') / 1000
         theUsbVoltage = int.from_bytes(usbVoltageData, byteorder='little') / 1000
         theStatus = int.from_bytes(statusData, byteorder='little')
-        theVersion = versionData.decode() if len(versionData) > 0 else "Unknown"
+        if len(versionData) > 0:
+            theVersion = versionData.decode()  
+        else:
+            theVersion = "Unknown"
         # Check if version data is available
         if len(versionData) > 0:
             theVersion = versionData.decode()
@@ -171,10 +174,10 @@ async def readTertillData(address=None):
             totalRobotTime = decodeRobotTime(totalRobotTime)
 
             drivingTime = int.from_bytes(robotTimesData[4:8], byteorder='little')
-            drivingTime = decodeRobotTime(totalRobotTime)
+            drivingTime = decodeRobotTime(drivingTime)
 
             whackerTime = int.from_bytes(robotTimesData[8:12], byteorder='little')
-            whackerTime = decodeRobotTime(totalRobotTime)
+            whackerTime = decodeRobotTime(whackerTime)
         
         print("\n=== Power Information ===")
         print("Battery Level: %d%%" % theBatteryPct)
